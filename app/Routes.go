@@ -13,6 +13,6 @@ func (Routes *Routes) MapUrls() {
 	router.GET("/ping", pingController.PingRequest)
 
 	router.GET("/users/:id/", userController.GetUser)
-	router.GET("/users/search/", userController.SearchUser)
+	// router.GET("/users/search/", userController.SearchUser)
 	router.POST("/users/", userController.CreateUser)
 }
