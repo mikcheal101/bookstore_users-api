@@ -15,6 +15,8 @@ type User struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
+// Method to validate user email
+// @return error RestError | nil
 func (user *User) ValidateUser() *errors.RestError {
 	user.Email = strings.TrimSpace(strings.ToLower(user.Email))
 	if user.Email == "" {
