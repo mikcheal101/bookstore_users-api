@@ -16,6 +16,7 @@ func (user *User) Save() *errors.RestError {
 		var error = errors.NewBadRequestError{}
 		if currentUser.Email == user.Email {
 			error.BadRequest(fmt.Sprintf("[+] User with email address: %s, already exists!", user.Email))
+			return &error.RestError
 		}
 		error.BadRequest(fmt.Sprintf("[+] User with id: %d, already exists!", user.Id))
 		return &error.RestError
@@ -31,7 +32,8 @@ func (user *User) Get() *errors.RestError {
 	var result = usersDB[user.Id]
 	if result == nil {
 		var responseError = errors.NewBadRequestError{}
-		return responseError.BadRequest(fmt.Sprintf("User with id: %d not found", user.Id))
+		responseError.BadRequest(fmt.Sprintf("User with id: %d not found", user.Id))
+		return &responseError.RestError
 	}
 
 	// set the user data
