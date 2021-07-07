@@ -16,7 +16,7 @@ type NewBadRequestError struct {
 }
 
 // Method to throw bad request error
-func (newBadRequestError *NewBadRequestError) NewBadRequest(message string) *RestError {
+func (newBadRequestError *NewBadRequestError) BadRequest(message string) *RestError {
 	newBadRequestError.RestError.Error = "bad_request"
 	newBadRequestError.RestError.Message = message
 	newBadRequestError.RestError.Status = http.StatusBadRequest

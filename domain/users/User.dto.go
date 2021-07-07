@@ -21,7 +21,7 @@ func (user *User) ValidateUser() *errors.RestError {
 	user.Email = strings.TrimSpace(strings.ToLower(user.Email))
 	if user.Email == "" {
 		error := errors.NewBadRequestError{}
-		error.NewBadRequest("invalid  email address")
+		error.BadRequest("invalid  email address")
 		return &error.RestError
 	}
 	return nil

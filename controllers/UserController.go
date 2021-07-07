@@ -26,7 +26,7 @@ func (UserController *UserController) CreateUser(req *gin.Context) {
 	if err := req.ShouldBindJSON(&user); err != nil {
 		restError := errors.NewBadRequestError{}
 		message := "Invalid parameters!"
-		response := restError.NewBadRequest(message)
+		response := restError.BadRequest(message)
 		req.JSON(response.Status, response)
 		return
 	}
