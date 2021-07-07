@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mikcheal101/bookstore_users-api/domain/users"
 	"github.com/mikcheal101/bookstore_users-api/services"
+	"github.com/mikcheal101/bookstore_users-api/utils/errors"
 )
 
 type UserController struct{}
@@ -23,29 +23,18 @@ func (UserController *UserController) GetUser(req *gin.Context) {
  */
 func (UserController *UserController) CreateUser(req *gin.Context) {
 	var user users.User
-	// bytes, err := ioutil.ReadAll(req.Request.Body)
-	// if err != nil {
-	// 	//TODO: Handle error
-	// 	fmt.Println("Invalid Parameters")
-	// 	return
-	// }
-	// if err := json.Unmarshal(bytes, &user); err != nil {
-	// 	//TODO: Handle json error
-	// 	fmt.Println("Invalid Parameters")
-	// 	return
-	// }
 	if err := req.ShouldBindJSON(&user); err != nil {
-		//TODO: return bad request error
-		req.JSON(http.StatusBadRequest, "Invalid parameters!")
+		restError := errors.NewBadRequestError{}
+		message := "Invalid parameters!"
+		response := restError.NewBadRequest(message)
+		req.JSON(response.Status, response)
 		return
 	}
 	createdUser, err := userService.CreateUser(user)
 	if err != nil {
-		//TODO: Handle user service creation error
-		fmt.Println(err)
+		req.JSON(err.Status, err)
 		return
 	}
-	fmt.Println(user, createdUser)
 	req.JSON(http.StatusCreated, createdUser)
 }
 
