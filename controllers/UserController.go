@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mikcheal101/bookstore_users-api/domain/users"
@@ -14,7 +16,22 @@ type UserController struct{}
 var userService services.UserService
 
 func (UserController *UserController) GetUser(req *gin.Context) {
-	req.String(http.StatusNotImplemented, "Pending Implementation")
+	userId, userError := strconv.ParseInt(req.Param("id"), 10, 64)
+	if userError != nil {
+		err := errors.NewBadRequestError{}
+		err.BadRequest("Invalid User id!")
+		req.JSON(err.RestError.Status, err.RestError)
+		return
+	}
+
+	user, userErr := userService.GetUserById(userId)
+	if userErr != nil {
+		fmt.Println(userErr)
+		req.JSON(userErr.Status, userErr)
+		return
+	}
+
+	req.JSON(http.StatusOK, user)
 }
 
 /**
